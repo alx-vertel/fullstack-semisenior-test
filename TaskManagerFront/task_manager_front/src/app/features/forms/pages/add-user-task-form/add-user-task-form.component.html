@@ -1,0 +1,138 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md mx-auto">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      <div class="h-2 bg-blue-600"></div>
+      
+      <div class="p-8">
+        <div class="mb-8">
+          <h2 class="text-2xl font-bold text-gray-900">Create New Task</h2>
+          <p class="text-gray-500 text-sm mt-1">Add a new task to the system.</p>
+        </div>
+
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <!-- Title -->
+          <div>
+            <label for="title" class="block text-sm font-semibold text-gray-700">Title*</label>
+            <div class="mt-1">
+              <input 
+                id="title"
+                type="text" 
+                formControlName="title"
+                placeholder="Task title"
+                [ngClass]="{'border-red-300 focus:ring-red-500 focus:border-red-500': taskForm.get('title')?.touched && taskForm.get('title')?.invalid}"
+                class="block w-full px-4 py-3 rounded-xl border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all border"
+              />
+            </div>
+            @if (taskForm.get('title')?.touched && taskForm.get('title')?.hasError('required')) {
+              <p class="mt-2 text-xs text-red-600 flex items-center">
+                <span class="mr-1">●</span> Title is required
+              </p>
+            }
+            @if (taskForm.get('title')?.touched && taskForm.get('title')?.hasError('maxlength')) {
+              <p class="mt-2 text-xs text-red-600 flex items-center">
+                <span class="mr-1">●</span> Title must be at most 100 characters
+              </p>
+            }
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-semibold text-gray-700">Description</label>
+            <div class="mt-1">
+              <textarea 
+                id="description"
+                formControlName="description"
+                rows="3"
+                placeholder="Describe the task"
+                class="block w-full px-4 py-3 rounded-xl border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all border"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Assign To -->
+          <div>
+            <label for="assignedUserId" class="block text-sm font-semibold text-gray-700">Assign To*</label>
+            <div class="mt-1">
+              <select 
+                id="assignedUserId"
+                formControlName="assignedUserId"
+                [ngClass]="{'border-red-300 focus:ring-red-500 focus:border-red-500': taskForm.get('assignedUserId')?.touched && taskForm.get('assignedUserId')?.invalid}"
+                class="block w-full px-4 py-3 rounded-xl border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all border"
+              >
+                <option value="">Select a user...</option>
+                @for (user of users(); track user.id) {
+                  <option [value]="user.id">{{ user.name }}</option>
+                }
+              </select>
+            </div>
+            @if (taskForm.get('assignedUserId')?.touched && taskForm.get('assignedUserId')?.invalid) {
+              <p class="mt-2 text-xs text-red-600 flex items-center">
+                <span class="mr-1">●</span> Please select a user
+              </p>
+            }
+          </div>
+
+          <!-- Priority -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700">Priority</label>
+            <div class="flex gap-4 mt-2">
+              @for (p of priorities; track p) {
+                <label class="flex items-center">
+                  <input type="radio" [value]="p" formControlName="priority" class="mr-2"> {{ p }}
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label for="tags" class="block text-sm font-semibold text-gray-700">Tags</label>
+            <div class="mt-1">
+              <input 
+                id="tags"
+                type="text"
+                formControlName="tags"
+                placeholder="Comma separated (e.g. bug, urgent)"
+                class="block w-full px-4 py-3 rounded-xl border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all border"
+              />
+            </div>
+          </div>
+
+          <!-- Estimated End Date -->
+          <div>
+            <label for="estimatedEndDate" class="block text-sm font-semibold text-gray-700">Estimated End Date</label>
+            <div class="mt-1">
+              <input 
+                id="estimatedEndDate"
+                type="date"
+                formControlName="estimatedEndDate"
+                class="block w-full px-4 py-3 rounded-xl border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all border"
+              />
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="pt-4 flex flex-col gap-3">
+            <button 
+              type="submit" 
+              [disabled]="taskForm.invalid"
+              class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-bold cursor-pointer hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex justify-center items-center gap-2"
+            >
+              Save Task
+            </button>
+            
+            <button 
+              type="button"
+              routerLink="/"
+              class="w-full bg-gray-50 text-gray-700 py-3 px-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
