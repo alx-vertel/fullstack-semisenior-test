@@ -333,7 +333,14 @@
         "type": "object",
         "properties": {
           "priority": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/UserTaskPriority"
+              }
+            ]
           },
           "estimatedEndDate": {
             "type": [
@@ -482,6 +489,14 @@
             "type": "string"
           }
         }
+      },
+      "UserTaskPriority": {
+        "enum": [
+          "Low",
+          "Medium",
+          "High",
+          null
+        ]
       },
       "UserTaskStatus": {
         "type": "integer"
